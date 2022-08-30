@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 
 const app=express()
 const port= 5000
@@ -27,12 +28,21 @@ const quotes=[
 
 ]
 
+function randomQuote(){
+    return Math.floor(Math.random() * (quotes.length))
+}
+
+app.use(cors())
 app.get("/", (req, res)=>{
 res.send("hello")
 })
 
 app.get("/quotes", (req, res)=>{
     res.send(quotes)
+})
+
+app.get("/random", (req, res)=>{
+    res.send(quotes[randomQuote()])
 })
 
 app.listen(port)
