@@ -32,7 +32,7 @@ function randomQuote(){
     return Math.floor(Math.random() * (quotes.length))
 }
 
-app.use(cors())
+app.use(cors() )
 app.get("/", (req, res)=>{
 res.send("hello")
 })
