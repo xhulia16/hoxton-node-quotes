@@ -81,18 +81,43 @@ app.get("/random", (req, res) => {
     res.send(quotes[randomQuote()])
 })
 
-app.post("/quotes", (req, res)=>{
-console.log(req.body)
-const newQuote={
-    id: quotes[quotes.length - 1].id + 1,
-    quote: req.body.quote,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName, 
-    age: req.body.age,
-    image: req.body.image
+app.post("/quotes", (req, res) => {
+
+    let errors: string[] = []
+
+    if (typeof req.body.quote !== "string") {
+        errors.push("Please enter a valid title")
+    }
+    if (typeof req.body.firstName !== "string") {
+        errors.push("Please enter a valid first name")
+    }
+    if (typeof req.body.lastName !== "string") {
+        errors.push("Please enter a valid last name")
+    }
+    if (typeof req.body.age !== "number") {
+        errors.push("Please enter a valid age")
+    }
+    if (typeof req.body.image !== "string") {
+        errors.push("Please enter a valid image address")
+    }
+
+    console.log(req.body)
+    if(errors.length===0){
+        const newQuote = {
+            id: quotes[quotes.length - 1].id + 1,
+            quote: req.body.quote,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            age: req.body.age,
+            image: req.body.image
+        }
+        quotes.push(newQuote)
+        res.send(newQuote)
+    }
+else{
+    res.status(400).send({ errors: errors })
 }
-quotes.push(newQuote)
-res.send(newQuote)
+   
 })
 
 app.listen(port)
