@@ -3,6 +3,7 @@ import cors from 'cors'
 
 const app = express()
 const port = 5000
+app.use(express.json())
 
 const quotes = [
     {
@@ -66,11 +67,32 @@ app.get("/quotes", (req, res) => {
 app.get("/quotes/:id", (req, res) => {
     const id = Number(req.params.id)
     const singleQuote = quotes.find(item => item.id === id)
-    res.send(singleQuote)
+
+    if (singleQuote) {
+        res.send(singleQuote)
+    }
+    else {
+        res.status(404).send({ error: "not found!" })
+    }
+
 })
 
 app.get("/random", (req, res) => {
     res.send(quotes[randomQuote()])
+})
+
+app.post("/quotes", (req, res)=>{
+console.log(req.body)
+const newQuote={
+    id: quotes[quotes.length - 1].id + 1,
+    quote: req.body.quote,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName, 
+    age: req.body.age,
+    image: req.body.image
+}
+quotes.push(newQuote)
+res.send(newQuote)
 })
 
 app.listen(port)
