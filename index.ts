@@ -5,7 +5,7 @@ const app = express()
 const port = 5000
 app.use(express.json())
 
-const quotes = [
+let quotes = [
     {
         id: 1,
         quote: "One cannot think well, love well, sleep well, if one has not dined well.",
@@ -102,7 +102,7 @@ app.post("/quotes", (req, res) => {
     }
 
     console.log(req.body)
-    if(errors.length===0){
+    if (errors.length === 0) {
         const newQuote = {
             id: quotes[quotes.length - 1].id + 1,
             quote: req.body.quote,
@@ -114,10 +114,43 @@ app.post("/quotes", (req, res) => {
         quotes.push(newQuote)
         res.send(newQuote)
     }
-else{
-    res.status(400).send({ errors: errors })
-}
-   
+    else {
+        res.status(400).send({ errors: errors })
+    }
+
+})
+
+app.delete("/quotes/:id", (req, res) => {
+    let id = Number(req.params.id)
+    console.log(id)
+    quotes = quotes.filter(quote => quote.id !== id)
+    res.send({ message: 'Quote deleted successfully.' })
+})
+
+app.patch("/quotes/:id", (req, res) => {
+    let id = Number(req.params.id)
+    let match = quotes.find(quote => quote.id === id)
+    if(match){
+
+    if (req.body.quote) {
+        match.quote = req.body.quote
+    }
+    if (req.body.firstName) {
+        match.firstName = req.body.firstName
+    }
+    if (req.body.lastName) {
+        match.lastName = req.body.lastName
+    }
+    if (req.body.age) {
+        match.age = req.body.age
+    }
+    if (req.body.image) {
+        match.age = req.body.image
+    }
+    res.send(match)}
+    else {
+        res.status(404).send({ error: 'Quote not found.' })
+      }
 })
 
 app.listen(port)
