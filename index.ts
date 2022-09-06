@@ -121,26 +121,6 @@ for(let author of authors){
     createAuthor.run(author.firstName, author.lastName, author.age, author.image)
 }
 
-
-
-
-// app.get("/authors", (req, res) => {
-//     res.send(authors)
-// })
-
-// app.get("/quotes/:id", (req, res) => {
-//     const id = Number(req.params.id)
-//     const singleQuote = quotes.find(item => item.id === id)
-//     const author = authors.find(item => item.id === singleQuote?.authorId)
-//     if (singleQuote) {
-//         res.send({ ...singleQuote, author })
-//     }
-//     else {
-//         res.status(404).send({ error: "not found!" })
-//     }
-
-// })
-
 // app.get("/random", (req, res) => {
 //     let random = Math.floor(Math.random() * (quotes.length))
 //     let quoteToSend = quotes[random]
@@ -245,4 +225,3 @@ for(let author of authors){
 //       }
 // })
 
-// app.listen(port)
