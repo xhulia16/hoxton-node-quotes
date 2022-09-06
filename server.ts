@@ -25,6 +25,16 @@ const getSingleAuthor = db.prepare(`
 SELECT * FROM authors WHERE id=? 
 `)
 
+const createQuote = db.prepare(`
+INSERT INTO quotes(quote, authorId) Values(?,?);
+`)
+
+const createAuthor= db.prepare(`
+INSERT INTO authors(firstName, lastName, age, image) VALUES(?,?,?,?);
+`)
+
+
+
 app.get("/", (req, res) => {
     res.send("hello")
 })
@@ -50,5 +60,34 @@ app.get("/authors/:id", (req, res) => {
     const author = getSingleAuthor.get(id)
     res.send(author)
 })
+
+app.post("/quotes", (req, res) => {
+
+    //     let errors: string[] = []
+
+    //     if (typeof req.body.quote !== "string") {
+    //         errors.push("Please enter a valid title")
+    //     }
+    //     if (typeof req.body.authorId !== "number" || req.body.authorId > authors.length || req.body.authorId < 0) {
+    //         errors.push("Please enter a valid author")
+    //     }
+
+    //     if (errors.length === 0) {
+    const quoteInfo = createQuote.run(req.body.quote, req.body.authorId)
+    const quote=getSingleQuote.get(quoteInfo.lastInsertRowid)
+    res.send(quote)
+    //     }
+    //     else {
+    //         res.status(400).send({ errors: errors })
+    //     }
+
+})
+
+app.post("/authors", (req, res)=>{
+ const authorInfo=createAuthor.run(req.body.firstName, req.body.lastName, req.body.age, req.body.image)
+ const author=getSingleAuthor.get(authorInfo.lastInsertRowid)
+ res.send(author)
+})
+
 
 app.listen(port)

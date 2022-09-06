@@ -129,32 +129,7 @@ for(let author of authors){
 //     res.send({ ...quoteToSend, author })
 // })
 
-// app.post("/quotes", (req, res) => {
 
-//     let errors: string[] = []
-
-//     if (typeof req.body.quote !== "string") {
-//         errors.push("Please enter a valid title")
-//     }
-//     if (typeof req.body.authorId !== "number" || req.body.authorId > authors.length || req.body.authorId < 0) {
-//         errors.push("Please enter a valid author")
-//     }
-
-//     console.log(req.body)
-//     if (errors.length === 0) {
-//         const newQuote = {
-//             id: quotes[quotes.length - 1].id + 1,
-//             quote: req.body.quote,
-//             authorId: req.body.authorId
-//         }
-//         quotes.push(newQuote)
-//         res.send(newQuote)
-//     }
-//     else {
-//         res.status(400).send({ errors: errors })
-//     }
-
-// })
 
 
 
