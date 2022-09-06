@@ -29,8 +29,16 @@ const createQuote = db.prepare(`
 INSERT INTO quotes(quote, authorId) Values(?,?);
 `)
 
-const createAuthor= db.prepare(`
+const createAuthor = db.prepare(`
 INSERT INTO authors(firstName, lastName, age, image) VALUES(?,?,?,?);
+`)
+
+const deleteSingleQuote=db.prepare(`
+DELETE FROM quotes WHERE id=?;
+`)
+
+const deleteSingleAuthor=db.prepare(`
+DELETE FROM authors WHERE id=?;
 `)
 
 
@@ -74,7 +82,7 @@ app.post("/quotes", (req, res) => {
 
     //     if (errors.length === 0) {
     const quoteInfo = createQuote.run(req.body.quote, req.body.authorId)
-    const quote=getSingleQuote.get(quoteInfo.lastInsertRowid)
+    const quote = getSingleQuote.get(quoteInfo.lastInsertRowid)
     res.send(quote)
     //     }
     //     else {
@@ -83,11 +91,24 @@ app.post("/quotes", (req, res) => {
 
 })
 
-app.post("/authors", (req, res)=>{
- const authorInfo=createAuthor.run(req.body.firstName, req.body.lastName, req.body.age, req.body.image)
- const author=getSingleAuthor.get(authorInfo.lastInsertRowid)
- res.send(author)
+app.post("/authors", (req, res) => {
+    const authorInfo = createAuthor.run(req.body.firstName, req.body.lastName, req.body.age, req.body.image)
+    const author = getSingleAuthor.get(authorInfo.lastInsertRowid)
+    res.send(author)
 })
+
+app.delete("/quotes/:id", (req, res) => {
+    let id = Number(req.params.id)
+    deleteSingleQuote.run(id)
+    res.send({ message: 'Quote deleted successfully.' })
+})
+
+app.delete("/authors/:id", (req, res) => {
+    let id = Number(req.params.id)
+    deleteSingleAuthor.run(id)
+    res.send({ message: 'Author deleted successfully.' })
+})
+
 
 
 app.listen(port)
