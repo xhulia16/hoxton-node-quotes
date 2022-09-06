@@ -1,19 +1,6 @@
-import express from 'express'
-import cors from 'cors'
-// import { quotesData, authors } from "./data"
 import Database from 'better-sqlite3'
 
 const db=Database('data.db', {verbose: console.log})
-// let quotes = quotesData
-// const app = express()
-// const port = 5001
-// app.use(express.json())
-
-// app.use(cors())
-
-// app.get("/", (req, res) => {
-//     res.send("hello")
-// })
 
 const quotes = [
     {
@@ -124,6 +111,8 @@ const deleteAllAuthors =db.prepare(`
 DELETE FROM authors;
 `)
 
+deleteAllAuthors.run()
+
 const createAuthor= db.prepare(`
 INSERT INTO authors(firstName, lastName, age, image) VALUES(?,?,?,?);
 `)
@@ -132,13 +121,8 @@ for(let author of authors){
     createAuthor.run(author.firstName, author.lastName, author.age, author.image)
 }
 
-// app.get("/quotes", (req, res) => {
-//     let quotesToSend = quotes.map(quote => {
-//         let author = authors.find(item => item.id === quote.authorId)
-//         return { ...quote, author }
-//     })
-//     res.send(quotesToSend)
-// })
+
+
 
 // app.get("/authors", (req, res) => {
 //     res.send(authors)
